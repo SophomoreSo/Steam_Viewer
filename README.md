@@ -14,6 +14,8 @@ You can install them with the following commands:
 ```
 pip install pyqt5
 pip install mysql-connector-python
+pip install beautifulsoup4
+pip install PyQtWebEngine
 ```
 
 <img src="Database_success.png" alt="Database Image" width="400"/>
