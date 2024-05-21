@@ -3,9 +3,9 @@
 
 
 ## Instructions for Use
+<img src="Program_success.png" alt="Program Image" width="400"/>
 
 ### Requirements
-<img src="Program_success.png" alt="Program Image" width="400"/>
 This program uses the following Python modules:
 - PyQt5
 - MySQL Connector for Python
