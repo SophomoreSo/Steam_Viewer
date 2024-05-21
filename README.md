@@ -1,5 +1,6 @@
 # CS-338-Group-Project
 
+<img src="Program_success.png" alt="Program Image" width="400"/>
 ## Instructions for Use
 
 ### Requirements
@@ -13,6 +14,9 @@ You can install them with the following commands:
 pip install pyqt5
 pip install mysql-connector-python
 ```
+
+<img src="Database_success.png" alt="Database Image" width="400"/>
+
 Database Setup
 1. Load CSV:
   Upload the file *game_encoded.csv* to your MySQL database.
