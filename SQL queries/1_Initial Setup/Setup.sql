@@ -34,13 +34,13 @@ SET autocommit=0;
 SET unique_checks=0;
 SET foreign_key_checks=0;
 
-LOAD DATA LOCAL INFILE 'price.csv' INTO TABLE price
+LOAD DATA LOCAL INFILE "C:/Users/soday/Downloads/CS-338-Group-Project/1_Initial_Setup/price.csv" INTO TABLE price
 FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS
 (app_id, timestamp, price);
 
-LOAD DATA LOCAL INFILE 'game.csv' INTO TABLE game
+LOAD DATA LOCAL INFILE "C:/Users/soday/Downloads/CS-338-Group-Project/1_Initial_Setup/game.csv" INTO TABLE game
 FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 ROWS

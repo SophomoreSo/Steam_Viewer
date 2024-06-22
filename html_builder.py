@@ -50,7 +50,11 @@ class IndexPage:
     def setSortOption(self, option):
         options = self.parser.find('select', {'id': 'sortDropdown'})
         options.find('option', {'value': option})['selected'] = 'selected'
-        
+    
+    def setAscending(self, is_ascend):
+        to_string = 'up' if is_ascend else 'down'
+        tag = self.parser.find('div', {'class': 'sort-container'}).find('span', {'id': 'sortToggle'})
+        tag['class'] = "sort-toggle " + to_string
 
     def reset(self):
         with open(index_html_dir, 'r', encoding='utf-8-sig') as file:

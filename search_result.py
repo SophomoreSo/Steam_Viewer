@@ -110,9 +110,9 @@ class Ui_Dialog(object):
         builder = html_builder.IndexPage()
         builder.setGameList(game_lst)
         builder.setSortOption(globalvar.global_sort_by)
+        builder.setAscending(globalvar.global_is_ascend)
         builder.setNavigator(globalvar.global_total_page, globalvar.global_current_page)
         builder.setSearchResultCount(globalvar.global_search_count)
-
         html_result = builder.build()
 
         self.browser.setHtml(html_result)

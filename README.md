@@ -6,10 +6,12 @@ We use MySQL 8.0 as our database management system. The SQL queries directory co
 ### 1. Initial Setup
 This folder guides you through importing the dataset into your database.
 
-- Open MySQL.
+- Open MySQL and login into 'localhost:127.0.0.1'.
 - Drag and drop the SQL file from the 'Initial Setup' folder into the MySQL program.
 - Replace `price.csv` and `game.csv` paths with the directories where your CSV files are located.
+   - For Windows, backward slash ('\') must be replaced with forward slash ('/') to prevent import error.
 - Click `Run` to automatically import the data.
+- Right click -> 'Refresh All'
 
 ### 2. Advanced Search
 This folder contains a single SQL file with two functionalities:
