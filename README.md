@@ -5,11 +5,23 @@ We use MySQL 8.0 as our database management system. The SQL queries directory co
 
 ### 1. Initial Setup
 This folder guides you through importing the dataset into your database.
-
+<div align="left">
+  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/1.png" height=200px>
+</div>
 - Open MySQL and login into 'localhost:127.0.0.1'.
+<div align="left">
+  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/2.png" height=200px>
+</div>
 - Drag and drop the SQL file from the 'Initial Setup' folder into the MySQL program.
+<div align="left">
+  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/3.png" height=200px>
+  
+</div>
 - Replace `price.csv` and `game.csv` paths with the directories where your CSV files are located.
-   - For Windows, backward slash ('\') must be replaced with forward slash ('/') to prevent import error.
+   - For Windows, backward slash ('\\') must be replaced with forward slash ('/') to prevent import error.
+<div align="left">
+   <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/4.png" height=200px>
+</div>
 - Click `Run` to automatically import the data.
 - Right click -> 'Refresh All'
 
