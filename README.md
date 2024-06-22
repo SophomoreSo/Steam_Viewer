@@ -6,24 +6,32 @@ We use MySQL 8.0 as our database management system. The SQL queries directory co
 ### 1. Initial Setup
 This folder guides you through importing the dataset into your database.
 <div align="left">
-  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/1.png" height=200px>
+  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/1.png" height=150px>
 </div>
 - Open MySQL and login into 'localhost:127.0.0.1'.
 <div align="left">
-  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/2.png" height=200px>
+  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/2.png" height=150px>
 </div>
 - Drag and drop the SQL file from the 'Initial Setup' folder into the MySQL program.
 <div align="left">
-  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/3.png" height=200px>
-  
+  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/3.png" height=150px>
+  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/4.png" height=150px>
 </div>
 - Replace `price.csv` and `game.csv` paths with the directories where your CSV files are located.
-   - For Windows, backward slash ('\\') must be replaced with forward slash ('/') to prevent import error.
+   
+   - For Windows, backward slash ('\') must be replaced with forward slash ('/') to prevent import error.
 <div align="left">
-   <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/4.png" height=200px>
+   <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/5.png" height=150px>
 </div>
 - Click `Run` to automatically import the data.
+<div align="left">
+   <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/6.png" height=150px>
+</div>
 - Right click -> 'Refresh All'
+<div align="left">
+   <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/7.png" height=150px>
+</div>
+- Double check that steamdb schema is selected.
 
 ### 2. Advanced Search
 This folder contains a single SQL file with two functionalities:
@@ -50,21 +58,45 @@ This folder contains a query to update prices using data from the web scraping m
 
 Please follow the instructions on how to PIP install here: https://youtu.be/fJKdIf11GcI
 
+<div align="left">
+   <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/1.png" height=100px>
+</div>
 - Go to the main directory, and open up the command prompt to type `python main.py`.
+
+<div align="left">
+   <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/2.png" height=150px>
+   <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/3.png" height=150px>
+</div>
 - When successfully opened up the application, you can enter the name of the game on the main search tab. You can also set the price requirements and rating requirements by clicking the respective settings button.
+
+<div align="left">
+   <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/4.png" height=150px>
+  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/5.png" height=150px>
+</div>
 - After setting up the search parameters, you will be prompted with the login popup. Simply type in the database password that you have set up.
 
 ## Implemented Features
 The application currently has three implemented features:
-
+<div align="left">
+  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/6.png" height=200px>
+</div>
 1. **Advanced Search**
    - Press Enter or click the 'search' button to see the results.
    - If any games meet the requirements, they will be displayed in the search result tab.
-
+<div align="left">
+  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/8.png" height=200px>
+  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/9.png" height=200px>
+</div>
 2. **Sort By Feature**
    - On the top of the search result tab, there is a dropdown menu and a triangle button.
    - Click the dropdown menu and select how you want to sort the results. Currently, there are three attributes (price, ratings, name) to sort by. You can also click the triangle button to list the results in ascending or descending order.
 
+<div align="left">
+  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/10.png" height=200px>
+</div>
+<div align="left">
+<img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/11.png" height=400px>
+</div>
 3. **Price History Viewer**
    - Click any item listed in the search tab. At the very bottom, a price chart of the game will be displayed. Hover over any point in the graph to see the time info and associated price.
 
