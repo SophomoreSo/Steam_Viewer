@@ -1,1 +1,0 @@
-SELECT * FROM game_data.game_encoded WHERE game_name = "Team Fortress 2";

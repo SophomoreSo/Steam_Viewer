@@ -1,5 +1,5 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-import main
+from PyQt5 import QtCore, QtWidgets
+import globalvar
 
 def getSteamRating(rate_num, percentage):
     if rate_num >= 500 and percentage >= 95:
@@ -117,11 +117,11 @@ class Ui_Dialog(object):
         self.horizontalSlider_2.valueChanged.connect(self.changeRatingNum)
         self.spinBox_2.valueChanged.connect(self.changeRatingNum)
     
-        self.spinBox.setValue(main.global_min_rating)
-        self.spinBox_2.setValue(main.global_max_rating)
-        self.horizontalSlider_2.setValue(main.global_user_rating)
-        self.label_5.setText(str(main.global_user_rating))
-        self.label_4.setText(getSteamRating(main.global_max_rating, main.global_user_rating))
+        self.spinBox.setValue(globalvar.global_min_rating)
+        self.spinBox_2.setValue(globalvar.global_max_rating)
+        self.horizontalSlider_2.setValue(globalvar.global_user_rating)
+        self.label_5.setText(str(globalvar.global_user_rating))
+        self.label_4.setText(getSteamRating(globalvar.global_max_rating, globalvar.global_user_rating))
 
     def accept(self, Dialog):
         if self.spinBox.value() > self.spinBox_2.value():
@@ -132,9 +132,9 @@ class Ui_Dialog(object):
             msg.exec_()
             return
 
-        main.global_min_rating = self.spinBox.value()
-        main.global_max_rating = self.spinBox_2.value()
-        main.global_user_rating = self.horizontalSlider_2.value()
+        globalvar.global_min_rating = self.spinBox.value()
+        globalvar.global_max_rating = self.spinBox_2.value()
+        globalvar.global_user_rating = self.horizontalSlider_2.value()
 
         Dialog.close()
 
@@ -142,12 +142,3 @@ class Ui_Dialog(object):
         current_max_rating = self.spinBox_2.value()
         self.label_5.setText(str(self.horizontalSlider_2.value()))
         self.label_4.setText(getSteamRating(current_max_rating, self.horizontalSlider_2.value()))
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Dialog = QtWidgets.QDialog()
-    ui = Ui_Dialog()
-    ui.setupUi(Dialog)
-    Dialog.show()
-    sys.exit(app.exec_())

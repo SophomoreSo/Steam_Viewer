@@ -1,58 +1,44 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import QObject, pyqtSlot, QVariant
+from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWebChannel import QWebChannel
-import bs4
-import main
-import html
-from sql_op import SqlOp
-
-html_dir = './page.html'
-
-current_page = 0
-
-class GameData:
-    def __init__(self, app_id, title, price, historically_low, rating, image_src):
-        self.app_id = app_id
-        self.title = title
-        self.price = price
-        self.historically_low = historically_low
-        self.rating = rating
-        self.image_src = image_src
-
-    def toHtmlElement(self):
-        HL = ''
-        if self.historically_low:
-            HL = r'<div class="historically-low">HL</div>'
-        result = f'''
-        <div class="game-card" style="animation-delay: 0s;">
-            <img src="{self.image_src}" onclick="handleClick({self.app_id})">
-            <div class="game-details">
-                <div class="game-title" onclick="handleClick({self.app_id})">{self.title}</div>
-                <div class="game-price">
-                    ${self.price}
-                    {HL}
-                </div>
-            </div>
-        </div>
-        '''
-        return result
+import game_data
 
 # https://stackoverflow.com/questions/58210400/how-to-receive-data-from-python-to-js-using-qwebchannel
 class Backend(QtCore.QObject):
     @QtCore.pyqtSlot(int)
     def getRef(self, x):
         if x < 0:
-            print("This is index", -x)
+            import globalvar
+            globalvar.global_current_page = -x
+            self.pageUI.loadPage()
         else:
-            print("This is item", x)
+            self.pageUI.loadGamePage(x)
+    @QtCore.pyqtSlot(int)
+    def getSort(self, attribute):
+        import globalvar
+        # 1: sort by price
+        # 2: sort by rating
+        # 3: sort by name
+        if attribute == 1:
+            globalvar.global_sort_by = 'price'
+        elif attribute == 2:
+            globalvar.global_sort_by = 'rate_num'
+        elif attribute == 3:
+            globalvar.global_sort_by = 'game_name'
+        self.pageUI.loadPage()
 
+    @QtCore.pyqtSlot(bool)
+    def getAscend(self, is_ascend):
+        import globalvar
+        globalvar.global_is_ascend = is_ascend
+        self.pageUI.loadPage()
 
-    # @QtCore.pyqtSlot(int)
-    # def printRef(self, ref):
-    #     print("inside printRef", ref)
-
+        
 class Ui_Dialog(object):
+    def __init__(self, search_name):
+        self.search_name = search_name
+
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(350, 383)
@@ -88,41 +74,60 @@ class Ui_Dialog(object):
         
     def custom_setup(self, Dialog):
         self.backend = Backend()
+        self.backend.pageUI = self
         self.channel = QWebChannel()
         self.browser.page().setWebChannel(self.channel)
         self.channel.registerObject("backend", self.backend)
+        
+        self.saveResultToView()
+        self.loadPage()
 
-        sql_operation = SqlOp()
-        search_name = main.getSearchName()
-        data_lst = sql_operation.getGameByName("Team Fortress 2")
+    def saveResultToView(self):
+        import globalvar
+        
+        globalvar.global_sql_op.advancedSearch(self.search_name, 
+                                                globalvar.global_min_price, 
+                                                globalvar.global_max_price, 
+                                                globalvar.global_min_rating, 
+                                                globalvar.global_max_rating, 
+                                                globalvar.global_user_rating)
+        globalvar.global_search_count = globalvar.global_sql_op.getCountFromSearchResult()[0][0]
+        globalvar.global_total_page = globalvar.global_search_count // globalvar.global_search_limit + 1
+        globalvar.global_current_page = 1
+        
+    def loadPage(self):
+        import globalvar
+        import html_builder
+        data_lst = globalvar.global_sql_op.getSearchResult(globalvar.global_search_limit,
+                                                            globalvar.global_current_page,
+                                                            globalvar.global_sort_by, 
+                                                            globalvar.global_is_ascend)
         game_lst = []
         for data in data_lst:
-            rate_percentage = data[3] / data[2] * 100
-            image_src = f'https://steamcdn-a.akamaihd.net/steam/apps/{data[4]}'
-            game_lst.append(GameData(data[0], data[1], 20, True, rate_percentage, image_src))
-            
-        self.loadPage(game_lst)
+            game = game_data.GamePageData(*data, False)
+            game_lst.append(game)
 
-    def loadPage(self, game_lst):
-        html_result = ''
-        content = ''
-        
-        with open(html_dir, 'r', encoding='utf-8-sig') as file:
-            html_result = file.read()
-        for data in game_lst:
-            content += data.toHtmlElement()
-        soup = bs4.BeautifulSoup(html_result, 'html.parser')
-        soup.find('div', {'id': 'content'}).append(content)
-        html_result = soup.prettify()
-        html_result = str(soup)
-        html_result = html.unescape(html_result)
+        builder = html_builder.IndexPage()
+        builder.setGameList(game_lst)
+        builder.setSortOption(globalvar.global_sort_by)
+        builder.setNavigator(globalvar.global_total_page, globalvar.global_current_page)
+        builder.setSearchResultCount(globalvar.global_search_count)
+
+        html_result = builder.build()
+
         self.browser.setHtml(html_result)
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Dialog = QtWidgets.QDialog()
-    ui = Ui_Dialog()
-    ui.setupUi(Dialog)
-    Dialog.show()
-    sys.exit(app.exec_())
+    
+    def loadGamePage(self, app_id):
+        import globalvar
+        import html_builder
+        data = globalvar.global_sql_op.getGameById(app_id)[0]
+        price = globalvar.global_sql_op.getPriceById(app_id)[0][0]
+        price_history = globalvar.global_sql_op.getPriceHistoryById(app_id)
+        image_src = f'https://cdn.akamai.steamstatic.com/steam/apps/{data[0]}/header.jpg'
+        builder = html_builder.GamePage()
+        builder.setGameImage(image_src)
+        builder.setGameName(data[1])
+        builder.setGamePrice(price)
+        builder.setPriceHistory(price_history)
+        html_result = builder.build()
+        self.browser.setHtml(html_result)

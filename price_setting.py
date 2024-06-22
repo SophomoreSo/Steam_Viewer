@@ -1,5 +1,5 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-import main
+from PyQt5 import QtCore, QtWidgets
+import globalvar
 
 class Ui_Dialog(QtWidgets.QDialog):
     def setupUi(self, Dialog):
@@ -68,11 +68,10 @@ class Ui_Dialog(QtWidgets.QDialog):
         self.buttonBox.rejected.connect(Dialog.reject)
 
         Dialog.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
-
-        self.spinBox.setValue(main.global_min_price)
-        self.spinBox_2.setValue(main.global_max_price)
-        self.checkBox.setChecked(main.global_historical_low)
-        self.checkBox_2.setChecked(main.global_hide_subscription)
+        self.spinBox.setValue(globalvar.global_min_price)
+        self.spinBox_2.setValue(globalvar.global_max_price)
+        self.checkBox.setChecked(globalvar.global_historical_low)
+        self.checkBox_2.setChecked(globalvar.global_hide_subscription)
 
     def accept(self, Dialog):
 
@@ -83,17 +82,8 @@ class Ui_Dialog(QtWidgets.QDialog):
             msg.setWindowTitle("Error")
             msg.exec_()
             return
-        main.global_min_price = self.spinBox.value()
-        main.global_max_price = self.spinBox_2.value()
-        main.global_historical_low = self.checkBox.isChecked()
-        main.global_hide_subscription = self.checkBox_2.isChecked()
+        globalvar.global_min_price = self.spinBox.value()
+        globalvar.global_max_price = self.spinBox_2.value()
+        globalvar.global_historical_low = self.checkBox.isChecked()
+        globalvar.global_hide_subscription = self.checkBox_2.isChecked()
         Dialog.close()
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Dialog = QtWidgets.QDialog()
-    ui = Ui_Dialog()
-    ui.setupUi(Dialog)
-    Dialog.show()
-    sys.exit(app.exec_())

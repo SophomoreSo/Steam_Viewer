@@ -1,31 +1,67 @@
 import mysql.connector
 
 class SqlConnector:
-    def __init__(self):
+    def __init__(self, passwd):
         self.mydb = mysql.connector.connect(
             host="127.0.0.1",
             user="root",
-            passwd="password edited for security",
-            database="game_data"
+            passwd=passwd,
+            database="steamdb"
         )
         self.cursor = self.mydb.cursor()
-    
+
     def query(self, sql):
         self.cursor.execute(sql)
         return self.cursor.fetchall()
     
 class SqlOp:
-    def __init__(self):
-        self.sql = SqlConnector()
+    def __init__(self, passwd):
+        self.sql = SqlConnector(passwd)
     
-    def getGameByName(self, name):
-        sql = f"SELECT * FROM game_encoded WHERE game_name = '{name}'"
-        print("query:", sql)
-        result = self.sql.query(sql)
-        print(result)
-        return result
+    def advancedSearch(self, name, min_price, max_price, min_rating, max_rating, user_rating):
+        sql = f'''
+            CREATE OR REPLACE VIEW SearchResult AS
+            SELECT g.app_id, g.game_name, p.price, g.rate_num, g.rate_positive
+            FROM Game g
+            JOIN Price p ON g.app_id = p.app_id
+            JOIN (
+                    SELECT app_id, MAX(timestamp) AS latest_timestamp
+                    FROM Price
+                    GROUP BY app_id
+                ) lp ON 
+                    p.app_id = lp.app_id 
+                    AND p.timestamp = lp.latest_timestamp
+            WHERE 
+                g.game_name LIKE '%{name}%'
+                AND g.rate_num BETWEEN {min_rating} AND {max_rating}
+                AND (g.rate_positive * 100.0 / g.rate_num) >= {user_rating}
+                AND p.price BETWEEN {min_price} AND {max_price};
+            '''
+        self.sql.query(sql)
 
-if __name__ == "__main__":
-    sql = SqlOp()
-    print(sql.getGameByName('Team'))
-
+    def getCountFromSearchResult(self):
+        sql = "SELECT COUNT(*) FROM SearchResult;"
+        return self.sql.query(sql)
+        
+    def getSearchResult(self, limit, page, order_by, is_ascend):
+        sql = f'''SELECT * FROM SearchResult 
+                ORDER BY {order_by} {'ASC' if is_ascend else 'DESC'} 
+                LIMIT {limit} 
+                OFFSET {limit * (page - 1)};'''
+        return self.sql.query(sql)
+    
+    def getGameById(self, id):
+        sql = f"SELECT * FROM game WHERE app_id = {id}"
+        return self.sql.query(sql)
+    
+    def getPriceById(self, app_id):
+        sql = f"SELECT price FROM price WHERE app_id = {app_id} ORDER BY timestamp DESC LIMIT 1;"
+        return self.sql.query(sql)
+    
+    def getPriceHistoryById(self, app_id):
+        sql = f"SELECT timestamp, price FROM price WHERE app_id = {app_id} ORDER BY timestamp ASC;"
+        return self.sql.query(sql)
+    
+    def insertPrice(self, app_id, price):
+        sql = f"INSERT INTO price (app_id, timestamp, price) VALUES ({app_id}, {price})"
+        self.sql.query(sql)

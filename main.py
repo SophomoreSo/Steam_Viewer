@@ -1,20 +1,7 @@
 from PyQt5 import QtCore, QtWidgets
 QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_ShareOpenGLContexts)
 
-global_min_price = 0
-global_max_price = 200
-global_hide_subscription = False
-global_historical_low = False
-
-global_min_rating = 0
-global_max_rating = 10000000
-global_user_rating = 95
-
-search_name = ''
-
-def getSearchName():
-    global search_name
-    return search_name
+import globalvar
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -91,12 +78,10 @@ class Ui_Dialog(object):
     
     def custom_setup(self, Dialog):
         Dialog.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
-
-        #connect buttons
         self.pushButton_5.clicked.connect(self.search)
         self.pushButton.clicked.connect(self.price_setting)
         self.pushButton_2.clicked.connect(self.rate_setting)
-        # self.pushButton_4.clicked.connect(self.setting)
+        self.pushButton_4.clicked.connect(self.setting_setting)
     
     def price_setting(self):
         from price_setting import Ui_Dialog as price_UI
@@ -111,15 +96,27 @@ class Ui_Dialog(object):
         self.rate_ui = rate_UI()
         self.rate_ui.setupUi(self.rate_diag)
         self.rate_diag.show()
+
+    def setting_setting(self):
+        from setting_setting import Ui_Dialog as setting_UI
+        self.setting_diag = QtWidgets.QDialog()
+        self.setting_ui = setting_UI()
+        self.setting_ui.setupUi(self.setting_diag)
+        self.setting_diag.show()
     
     def search(self):
         from search_result import Ui_Dialog as search_UI
-        
-        global search_name
+        if not globalvar.global_has_session:
+            from login_setting import Ui_Dialog as setting_UI
+            self.setting_diag = QtWidgets.QDialog()
+            self.setting_ui = setting_UI()
+            self.setting_ui.setupUi(self.setting_diag)
+            self.setting_diag.exec()
+            if not globalvar.global_has_session:
+                return
         search_name = self.lineEdit.text()
-
         self.search_diag = QtWidgets.QDialog()
-        self.search_ui = search_UI()
+        self.search_ui = search_UI(search_name)
         self.search_ui.setupUi(self.search_diag)
         self.search_diag.show()
 

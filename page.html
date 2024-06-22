@@ -11,6 +11,54 @@
             margin: 0;
             padding-bottom: 50px;
         }
+        .sort-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .sort-label {
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        .sort-dropdown, .sort-toggle {
+            padding: 5px 10px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #3b3f45;
+            color: #ffffff;
+            border: none;
+        }
+
+        .sort-toggle {
+            padding: 5px 10px;
+            margin: 0 10px;
+            border-radius: 5px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .sort-toggle.up::before {
+            content: "";
+            border-top: 8px solid #ffffff;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .sort-toggle.down::before {
+            content: "";
+            border-bottom: 8px solid #ffffff;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
         .header {
             text-align: center;
             margin: 20px;
@@ -52,6 +100,11 @@
             display: flex;
             align-items: center;
         }
+        .positive-rating {
+            margin-left: 10px;
+            font-size: 14px;
+            color: #32CD32;
+        }
         .historically-low {
             display: inline-block;
             background-color: #32CD32;
@@ -83,7 +136,7 @@
         }
         .page-index {
             display: inline-block;
-            margin: 0 10px;
+            margin: 0 5px;
             cursor: pointer;
             padding: 5px 10px;
             border-radius: 5px;
@@ -92,19 +145,40 @@
         .page-index:hover {
             background-color: #32CD32;
         }
+        .sort-toggle.up::before {
+            content: "";
+            border-top: 8px solid #ffffff;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .sort-toggle.down::before {
+            content: "";
+            border-bottom: 8px solid #ffffff;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            display: inline-block;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
     <header class="header">
-        We found ### results.
     </header>
+    <div class="sort-container">
+        <span class="sort-label">Sort by:</span>
+        <select class="sort-dropdown" id="sortDropdown" value="price" onchange="changeSort();">
+            <option value="price" Selected>Price</option>
+            <option value="rate_num">Rating</option>
+            <option value="game_name">Name</option>
+        </select>
+        <span class="sort-toggle up" id="sortToggle" onclick="toggleSortOrder()"></span>
+    </div>
     <div id="content">
         
     </div>
     <div class="fixed-bar">
-        <span class="page-index" onclick=handleIndexClick(1)>1</span>
-        <span class="page-index" onclick=handleIndexClick(2)>2</span>
-        <span class="page-index" onclick=handleIndexClick(3)>3</span>
     </div>
     <script>
         function handleClick(index) {
@@ -118,6 +192,34 @@
                     backend = channel.objects.backend;
                     backend.getRef(-index); // Hack, but still works
                 });
+        }
+        function changeSort() {
+            var selectBox = document.getElementById("sortDropdown");
+            new QWebChannel(qt.webChannelTransport, function(channel) {
+                    backend = channel.objects.backend;
+                    // 1: sort by price
+                    // 2: sort by rating
+                    // 3: sort by name
+                    backend.getSort(selectBox.selectedIndex + 1);
+                });
+        }
+        function toggleSortOrder() {
+            const toggleButton = document.getElementById('sortToggle');
+            if (toggleButton.classList.contains('up')) {
+                toggleButton.classList.remove('up');
+                toggleButton.classList.add('down');
+                new QWebChannel(qt.webChannelTransport, function(channel) {
+                    backend = channel.objects.backend;
+                    backend.getAscend(false);
+                });
+            } else {
+                toggleButton.classList.remove('down');
+                toggleButton.classList.add('up');
+                new QWebChannel(qt.webChannelTransport, function(channel) {
+                    backend = channel.objects.backend;
+                    backend.getAscend(true);
+                });
+            }
         }
         
     </script>
