@@ -106,6 +106,31 @@ class GamePage:
         script_tag = self.parser.find('script', text=lambda x: x and '{priceHistoryData}' in x).string
         script_tag = script_tag.replace('{priceHistoryData}', price_history_data)
         self.parser.find('script', text=lambda x: x and '{priceHistoryData}' in x).string = script_tag
+    
+    def setReview(self, review_list):
+        from datetime import datetime
+        for review in review_list:
+            username = review[0]
+            voted_up = review[1]
+            review_text = review[2] 
+            timestamp = review[3]
+
+            timestamp_to_str = datetime.fromtimestamp(timestamp)
+            timestamp_to_str = timestamp_to_str.strftime('%Y-%m-%d %H:%M:%S')
+
+            vote_html = '<div class="review-rating good">Good</div>' if voted_up == 1 else '<div class="review-rating bad">Bad</div>'
+            html_template = f'''<div class="review">
+                <div class="review-details">
+                    <div class="review-username">{username}
+                        {vote_html}
+                    </div>
+                    <div class="review-date">Posted on {timestamp_to_str}</div>
+                    <div class="review-text">{review_text}</div>
+                </div>
+            </div>'''
+
+            self.parser.find('div', {'class': 'review-container'}).append(html_template)
+            
 
     def reset(self):
         with open(game_html_dir, 'r', encoding='utf-8-sig') as file:

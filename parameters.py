@@ -46,6 +46,7 @@ class Ui_Dialog(object):
         self.pushButton_2.setText(_translate("Dialog", "Cancel"))
 
     def custom_setup(self, Dialog):
+        Dialog.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
         self.lineEdit.setFocus()
         self.lineEdit.returnPressed.connect(self.add_item)
         self.listWidget.itemDoubleClicked.connect(self.listWidget.editItem)

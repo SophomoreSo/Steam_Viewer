@@ -51,7 +51,7 @@ class SqlOp:
         return self.sql.query(sql)
     
     def getGameById(self, id):
-        sql = f"SELECT * FROM game WHERE app_id = {id}"
+        sql = f"SELECT app_id, game_name, rate_num, rate_positive FROM game WHERE app_id = {id}"
         return self.sql.query(sql)
     
     def getPriceById(self, app_id):
@@ -60,6 +60,15 @@ class SqlOp:
     
     def getPriceHistoryById(self, app_id):
         sql = f"SELECT timestamp, price FROM price WHERE app_id = {app_id} ORDER BY timestamp ASC;"
+        return self.sql.query(sql)
+    
+    def getReviewByAppId(self, app_id):
+        sql = f'''SELECT rt.user_id, rt.voted_up, rt.discussion_text, rt.timestamp_created
+                FROM review_text rt
+                JOIN review r ON rt.discussion_id = r.discussion_id
+                WHERE r.game_id = {app_id}
+                ORDER BY rt.timestamp_created DESC
+                LIMIT 5;'''
         return self.sql.query(sql)
     
     def insertPrice(self, app_id, price):

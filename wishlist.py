@@ -20,6 +20,8 @@ class Ui_Dialog(object):
         self.verticalLayout.addWidget(self.buttonBox)
 
         self.retranslateUi(Dialog)
+
+        self.custom_setup(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
@@ -30,3 +32,9 @@ class Ui_Dialog(object):
         item = self.listWidget.item(0)
         item.setText(_translate("Dialog", "Sample Item"))
         self.listWidget.setSortingEnabled(__sortingEnabled)
+
+    def custom_setup(self, Dialog):
+        Dialog.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
+        # I'll change this later
+        self.buttonBox.accepted.connect(Dialog.accept)
+        self.buttonBox.rejected.connect(Dialog.reject)

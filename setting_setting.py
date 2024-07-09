@@ -129,6 +129,7 @@ class Ui_Dialog(object):
 
     def custom_setup(self, Dialog):
         self.hideProgressBar()
+        Dialog.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
         self.pushButton_2.clicked.connect(self.saveParameter)
         self.pushButton.clicked.connect(self.savedParameter)
         self.pushButton_4.clicked.connect(self.manageWishlist)

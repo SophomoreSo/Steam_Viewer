@@ -62,6 +62,10 @@
             margin-right: 10px;
             cursor: pointer;
             border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .genre-button:hover {
+            background-color: #5a6268;
         }
         .actions {
             display: flex;
@@ -75,6 +79,10 @@
             margin-right: 10px;
             cursor: pointer;
             border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .action-button:hover {
+            background-color: #5a6268;
         }
         .price-info {
             background-color: #3b3f45;
@@ -100,6 +108,10 @@
             margin-right: 10px;
             cursor: pointer;
             border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .tab-button:hover {
+            background-color: #5a6268;
         }
         .price-history {
             background-color: #3b3f45;
@@ -107,6 +119,46 @@
             padding-top: 0px;
             border-radius: 10px;
             margin-bottom: 10px;
+        }
+        .reviews {
+            background-color: #3b3f45;
+            padding: 10px;
+            padding-top: 1px;
+            border-radius: 10px;
+        }
+        .review {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .review-details {
+            text-align: left;
+            width: 100%;
+        }
+        .review-username {
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .review-date {
+            font-size: 12px;
+            color: #888;
+        }
+        .review-text {
+            margin: 5px 0;
+        }
+        .review-rating {
+            display: flex;
+            align-items: center;
+        }
+        .review-rating.good {
+            color: #32CD32;
+            margin-left: 5px;
+        }
+        .review-rating.bad {
+            color: #FF6347;
+            margin-left: 5px;
         }
         table {
             width: 100%;
@@ -138,13 +190,18 @@
                     </div>
                     <p>This is a description</p>
                     <div class="actions">
-                        <button class="action-button">Wishlist it</button>
-                        <button class="tab-button">DLCs (3)</button>
+                        <button class="action-button">Wishlist</button>
+                        <button class="action-button">Find DLCs</button>
+                        <button class="action-button">Find Streamer</button>
                     </div>
                 </div>
             </div>
             <section class="price-history">
                 <canvas id="priceChart"></canvas>
+            </section>
+            <section class="reviews">
+                <h3>Game Reviews</h3>
+                <div class="review-container"></div>
             </section>
         </main>
     </div>

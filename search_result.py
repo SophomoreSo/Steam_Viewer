@@ -34,6 +34,12 @@ class Backend(QtCore.QObject):
         globalvar.global_is_ascend = is_ascend
         self.pageUI.loadPage()
 
+    @QtCore.pyqtSlot(int)
+    def wishlist(self, app_id):
+        import globalvar
+        globalvar.global_sql_op.addWishlist(app_id)
+        self.pageUI.loadGamePage(app_id)
+
         
 class Ui_Dialog(object):
     def __init__(self, search_name):
@@ -78,7 +84,7 @@ class Ui_Dialog(object):
         self.channel = QWebChannel()
         self.browser.page().setWebChannel(self.channel)
         self.channel.registerObject("backend", self.backend)
-        
+        Dialog.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
         self.saveResultToView()
         self.loadPage()
 
@@ -123,11 +129,13 @@ class Ui_Dialog(object):
         data = globalvar.global_sql_op.getGameById(app_id)[0]
         price = globalvar.global_sql_op.getPriceById(app_id)[0][0]
         price_history = globalvar.global_sql_op.getPriceHistoryById(app_id)
+        reviews = globalvar.global_sql_op.getReviewByAppId(app_id)
         image_src = f'https://cdn.akamai.steamstatic.com/steam/apps/{data[0]}/header.jpg'
         builder = html_builder.GamePage()
         builder.setGameImage(image_src)
         builder.setGameName(data[1])
         builder.setGamePrice(price)
         builder.setPriceHistory(price_history)
+        builder.setReview(reviews)
         html_result = builder.build()
         self.browser.setHtml(html_result)
