@@ -71,6 +71,30 @@ This folder includes three SQL files with queries for displaying prices. The pur
 ### 4. Refresh Price
 This folder contains a query to update prices using data from the web scraping module. The query fetches the current price, along with the current timestamp and `app_id`, for all games listed in our database.
 
+### 5. Steam Review
+
+This folder contains queries that output a list of reviews made by Steam users. 
+The query will return game reviews associated with the provided `app_id`.
+The table is divided into two parts for performance optimization:
+  1. Game_Discussion(discussion_id, game_id)
+  2. Discussion(discussion_id, user_id, voted_up, review_text, timestamp_created)
+<div align="left">
+   <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/SQL queries/5_Steam_Review/Performance Tuning Proof.png">
+</div>
+There are two SQL files in this folder: one optimized for performance and the other not. Please run both queries to compare their runtime.
+
+### 6. Find Streamer
+
+These SQL queries outputs a list of streamers associated with the `app_id` that has a past experience in playing the game.
+The query takes one parameter `app_id` and outputs streamer's channel name and the number of followers of the channel.
+The table is also divided into two parts for optimization:
+  1. Streamer_App(app_id, streamer_id)
+  2. Streamer(streamer_id, streamer_name, followers)
+<div align="left">
+   <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/SQL queries/6_Find_Streamer/Performance Tuning Proof.png">
+</div>
+Again, run both queries for comparison.
+
 ## How to Test Application
 - Python 3.10 is used for the setup.
 - This is tested under Windows 11 environment.
@@ -139,10 +163,18 @@ The application currently has three implemented features:
 <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/11.png" height=400px>
 </div>
 
-
 3. **Price History Viewer**
-   - Click any item listed in the search tab. At the very bottom, a price chart of the game will be displayed. Hover over any point in the graph to see the time info and associated price.
+   - Click any item listed in the search tab. At the bottom, a price chart of the game will be displayed. Hover over any point in the graph to see the time info and associated price.
+
+<div align="left">
+  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/12.png" height=400px>
+</div>
+
+4. **Steam Reviews**
+   - Scroll to the very bottom of the game page, reviews and comments about the game is displayed.
 
 ## Additional Comments
 - Web scraping tools are attached inside the 'Scraping Tools' folder.
 - The websites used for scraping are 'store.steampowered.com/api' and 'gg.deals'.
+
+
