@@ -19,4 +19,4 @@ LIMIT 10
 OFFSET 0;
 
 -- Sort By Feature --
-SELECT * FROM SearchResult ORDER BY rate_num DESC;
+SELECT app_id, game_name, price, rate_num, rate_positive FROM SearchResult ORDER BY rate_num DESC;
