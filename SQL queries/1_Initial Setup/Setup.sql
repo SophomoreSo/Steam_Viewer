@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS wishlist (
 
 CREATE TABLE IF NOT EXISTS gameHL (
     app_id INT NOT NULL,
-    price_hl DECIMAL(10, 2) NOT NULL CHECK (price_hl BETWEEN 0 AND 1000),
+    price_hl DECIMAL(10, 2) NOT NULL,
     PRIMARY KEY (app_id)
 );
 
