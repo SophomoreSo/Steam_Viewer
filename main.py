@@ -23,7 +23,6 @@ class Ui_Dialog(object):
         self.lineEdit = QtWidgets.QLineEdit(self.frame_2)
         self.lineEdit.setMinimumSize(QtCore.QSize(0, 30))
         self.lineEdit.setFocusPolicy(QtCore.Qt.TabFocus)
-        self.lineEdit.setContextMenuPolicy(QtCore.Qt.NoContextMenu)
         self.lineEdit.setMaxLength(100)
         self.lineEdit.setObjectName("lineEdit")
         self.horizontalLayout_2.addWidget(self.lineEdit)
@@ -82,6 +81,10 @@ class Ui_Dialog(object):
         self.pushButton.clicked.connect(self.price_setting)
         self.pushButton_2.clicked.connect(self.rate_setting)
         self.pushButton_4.clicked.connect(self.setting_setting)
+
+        import globalvar
+        globalvar.global_search_lineEdit = self.lineEdit
+
     
     def price_setting(self):
         from price_setting import Ui_Dialog as price_UI
@@ -99,6 +102,14 @@ class Ui_Dialog(object):
 
     def setting_setting(self):
         from setting_setting import Ui_Dialog as setting_UI
+        if not globalvar.global_has_session:
+            from login_setting import Ui_Dialog as login_UI
+            self.login_diag = QtWidgets.QDialog()
+            self.login_ui = login_UI()
+            self.login_ui.setupUi(self.login_diag)
+            self.login_diag.exec()
+            if not globalvar.global_has_session:
+                return
         self.setting_diag = QtWidgets.QDialog()
         self.setting_ui = setting_UI()
         self.setting_ui.setupUi(self.setting_diag)
@@ -107,11 +118,11 @@ class Ui_Dialog(object):
     def search(self):
         from search_result import Ui_Dialog as search_UI
         if not globalvar.global_has_session:
-            from login_setting import Ui_Dialog as setting_UI
-            self.setting_diag = QtWidgets.QDialog()
-            self.setting_ui = setting_UI()
-            self.setting_ui.setupUi(self.setting_diag)
-            self.setting_diag.exec()
+            from login_setting import Ui_Dialog as login_UI
+            self.login_diag = QtWidgets.QDialog()
+            self.login_ui = login_UI()
+            self.login_ui.setupUi(self.login_diag)
+            self.login_diag.exec()
             if not globalvar.global_has_session:
                 return
         search_name = self.lineEdit.text()

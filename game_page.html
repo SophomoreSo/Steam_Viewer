@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+    <script src="qrc:///js/chart.js" type="text/javascript"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Page</title>
@@ -170,7 +172,6 @@
             text-align: left;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="floating-bar">
@@ -185,14 +186,12 @@
                     <h2><span class="best-deal">HL</span></h2>
                     <div class="genres">
                         <span>Genres:</span>
-                        <button class="genre-button">Standard</button>
-                        <button class="genre-button">Super Citizen</button>
                     </div>
-                    <p>This is a description</p>
+                    <p class="game-description"></p>
                     <div class="actions">
-                        <button class="action-button">Wishlist</button>
-                        <button class="action-button">Find DLCs</button>
-                        <button class="action-button">Find Streamer</button>
+                        <button class="action-button" onclick="wishlist()">Wishlist</button>
+                        <button class="action-button" onclick="findDLCs()">Find DLCs</button>
+                        <button class="action-button" onclick="findStreamer()">Find Streamers</button>
                     </div>
                 </div>
             </div>
@@ -257,6 +256,24 @@
                 }
             });
         });
+    function findStreamer() {
+        new QWebChannel(qt.webChannelTransport, function(channel) {
+                backend = channel.objects.backend;
+                backend.findStreamer();
+            });
+    }
+    function wishlist(){
+        new QWebChannel(qt.webChannelTransport, function(channel) {
+                backend = channel.objects.backend;
+                backend.wishlist();
+            });
+    }
+    function findDLCs(){
+        new QWebChannel(qt.webChannelTransport, function(channel) {
+                backend = channel.objects.backend;
+                backend.findDLCs();
+            });
+    }
     </script>
 </body>
 </html>

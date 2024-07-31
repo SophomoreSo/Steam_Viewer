@@ -4,6 +4,10 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWebChannel import QWebChannel
 import game_data
 
+# imports 3rd party javascript modules
+# https://www.pythonguis.com/tutorials/qresource-system/
+import js_files
+
 # https://stackoverflow.com/questions/58210400/how-to-receive-data-from-python-to-js-using-qwebchannel
 class Backend(QtCore.QObject):
     @QtCore.pyqtSlot(int)
@@ -34,11 +38,53 @@ class Backend(QtCore.QObject):
         globalvar.global_is_ascend = is_ascend
         self.pageUI.loadPage()
 
-    @QtCore.pyqtSlot(int)
-    def wishlist(self, app_id):
+    @QtCore.pyqtSlot()
+    def wishlist(self):
         import globalvar
-        globalvar.global_sql_op.addWishlist(app_id)
-        self.pageUI.loadGamePage(app_id)
+        user_id = globalvar.global_your_user_id
+        app_id = globalvar.global_viewing_app_id
+        is_duplicate = globalvar.global_sql_op.isDuplicateWishlist(user_id, app_id)
+        
+        if is_duplicate:
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
+            msg.setText("Wishlist already added!")
+            msg.setWindowTitle("Warning")
+            msg.exec_()
+            return
+
+        from set_wishlist import Ui_Dialog as set_wishlist_UI
+        self.set_wishlist_diag = QtWidgets.QDialog()
+        self.set_wishlist_ui = set_wishlist_UI()
+        self.set_wishlist_ui.setupUi(self.set_wishlist_diag)
+        self.set_wishlist_diag.exec()
+
+        if self.set_wishlist_diag.success:
+            discount = self.set_wishlist_diag.discount
+            globalvar.global_sql_op.addWishlist(user_id, app_id, discount)
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Information)
+            msg.setText("Wishlist added successfully!")
+            msg.setWindowTitle("Success")
+            msg.exec_()
+
+    @QtCore.pyqtSlot()
+    def findStreamer(self):
+        import globalvar
+        app_id = globalvar.global_viewing_app_id
+        self.pageUI.loadStreamListPage(app_id)
+
+    @QtCore.pyqtSlot()
+    def findDLCs(self):
+        import globalvar
+        app_id = globalvar.global_viewing_app_id
+        self.pageUI.saveDLCResultToView(app_id)
+        self.pageUI.loadPage()
+
+    @QtCore.pyqtSlot(str)
+    def openLink(self, link):
+        import webbrowser
+        webbrowser.open(link)
 
         
 class Ui_Dialog(object):
@@ -47,7 +93,7 @@ class Ui_Dialog(object):
 
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(350, 383)
+        Dialog.resize(420, 700)
         self.gridLayout = QtWidgets.QGridLayout(Dialog)
         self.gridLayout.setContentsMargins(1, 1, 1, 1)
         self.gridLayout.setObjectName("gridLayout")
@@ -90,13 +136,20 @@ class Ui_Dialog(object):
 
     def saveResultToView(self):
         import globalvar
-        
-        globalvar.global_sql_op.advancedSearch(self.search_name, 
-                                                globalvar.global_min_price, 
-                                                globalvar.global_max_price, 
-                                                globalvar.global_min_rating, 
-                                                globalvar.global_max_rating, 
-                                                globalvar.global_user_rating)
+        if globalvar.global_historical_low:
+            globalvar.global_sql_op.advancedSearchWithHL(self.search_name,
+                                                        globalvar.global_min_price, 
+                                                        globalvar.global_max_price, 
+                                                        globalvar.global_min_rating, 
+                                                        globalvar.global_max_rating, 
+                                                        globalvar.global_user_rating)
+        else:
+            globalvar.global_sql_op.advancedSearch(self.search_name, 
+                                                    globalvar.global_min_price, 
+                                                    globalvar.global_max_price, 
+                                                    globalvar.global_min_rating, 
+                                                    globalvar.global_max_rating, 
+                                                    globalvar.global_user_rating)
         globalvar.global_search_count = globalvar.global_sql_op.getCountFromSearchResult()[0][0]
         globalvar.global_total_page = globalvar.global_search_count // globalvar.global_search_limit + 1
         globalvar.global_current_page = 1
@@ -108,9 +161,14 @@ class Ui_Dialog(object):
                                                             globalvar.global_current_page,
                                                             globalvar.global_sort_by, 
                                                             globalvar.global_is_ascend)
+        
         game_lst = []
         for data in data_lst:
-            game = game_data.GamePageData(*data, False)
+            if data[5] is None:
+                historical_low = False
+            else:
+                historical_low = data[5] > data[2]
+            game = game_data.GamePageData(data[0], data[1], data[2], data[3], data[4], historical_low)
             game_lst.append(game)
 
         builder = html_builder.IndexPage()
@@ -128,14 +186,46 @@ class Ui_Dialog(object):
         import html_builder
         data = globalvar.global_sql_op.getGameById(app_id)[0]
         price = globalvar.global_sql_op.getPriceById(app_id)[0][0]
+        description = globalvar.global_sql_op.getDescriptionById(app_id)
+        description = description[0][0] if description else ''
+        genres = globalvar.global_sql_op.getGameGenresById(app_id)
         price_history = globalvar.global_sql_op.getPriceHistoryById(app_id)
         reviews = globalvar.global_sql_op.getReviewByAppId(app_id)
+        globalvar.global_viewing_app_id = app_id
         image_src = f'https://cdn.akamai.steamstatic.com/steam/apps/{data[0]}/header.jpg'
         builder = html_builder.GamePage()
         builder.setGameImage(image_src)
         builder.setGameName(data[1])
         builder.setGamePrice(price)
+        builder.setGameDescription(description)
+        builder.setGameGenre(genres)
         builder.setPriceHistory(price_history)
         builder.setReview(reviews)
         html_result = builder.build()
         self.browser.setHtml(html_result)
+
+    def loadStreamListPage(self, app_id):
+        import globalvar
+        import html_builder
+        streamer_tuple = globalvar.global_sql_op.getStreamerList(app_id)
+        
+        # set derived attribute "link" for each streamers
+        # https://www.twitchmetrics.net/c/{streamer_id}-{streamer_name.lower()}
+        streamer_dict = []
+        for streamer in streamer_tuple:
+            streamer_dict.append({'name': streamer[1], 
+                                  'followers': streamer[2], 
+                                  'link': f'https://www.twitchmetrics.net/c/{streamer[0]}-{streamer[1].lower()}'})
+        builder = html_builder.StreamerPage()
+        builder.setStreamers(streamer_dict)
+        html_result = builder.build()
+        self.browser.setHtml(html_result)
+
+    def saveDLCResultToView(self, app_id):
+        import globalvar
+        globalvar.global_sql_op.searchDLCs(app_id)
+        globalvar.global_search_count = globalvar.global_sql_op.getCountFromSearchResult()[0][0]
+        globalvar.global_total_page = globalvar.global_search_count // globalvar.global_search_limit + 1
+        globalvar.global_current_page = 1
+        
+        

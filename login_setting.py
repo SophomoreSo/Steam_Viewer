@@ -32,7 +32,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        Dialog.setWindowTitle(_translate("Dialog", "Challenge"))
         self.label.setText(_translate("Dialog", "Password:"))
 
     def custom_setup(self, Dialog):
@@ -57,7 +57,6 @@ class Ui_Dialog(object):
             Dialog.accept()
 
         except Exception as e:
-            # error message box
             msg = QtWidgets.QMessageBox()
             msg.setIcon(QtWidgets.QMessageBox.Critical)
             msg.setText(str(e))

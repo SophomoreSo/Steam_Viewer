@@ -14,13 +14,17 @@ class GamePageData:
         rating = int(self.rate_positive * 100 // self.rate_num)
         if self.historically_low:
             HL = r'<div class="historically-low">HL</div>'
+        if self.price < 0:
+            price = 'NA'
+        else:
+            price = self.price
         result = f'''
         <div class="game-card" style="animation-delay: 0s;">
             <img src="{self.image_src}" onclick="handleClick({self.app_id})">
             <div class="game-details">
                 <div class="game-title" onclick="handleClick({self.app_id})">{self.title}</div>
                 <div class="game-price">
-                    ${self.price}
+                    ${price}
                     {HL}
                     <span class="positive-rating">{rating}%</span>
                     <span class="positive-rating">({self.rate_num})</span>

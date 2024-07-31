@@ -15,5 +15,13 @@ global_search_limit = 10
 global_current_page = 1
 global_search_count = 0
 
+global_viewing_app_id = -1
+
 global_sort_by = 'price'
 global_is_ascend = True
+
+# Spaghetti, but it works
+global_search_lineEdit = None
+
+# This is your fake user id
+global_your_user_id = 123456789

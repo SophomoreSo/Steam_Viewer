@@ -114,7 +114,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        Dialog.setWindowTitle(_translate("Dialog", "Setting"))
         self.checkBox.setText(_translate("Dialog", "Search Autocomplete"))
         self.label.setText(_translate("Dialog", "Limit # of Result:"))
         self.pushButton_2.setText(_translate("Dialog", "Save Current Parameter"))
@@ -137,8 +137,35 @@ class Ui_Dialog(object):
         self.pushButton_3.clicked.connect(self.updateDB)
 
     def saveParameter(self):
-        pass
+        from set_parameter import Ui_Dialog as set_parameter_UI
+        self.set_parameter_diag = QtWidgets.QDialog()
+        self.set_parameter_ui = set_parameter_UI()
+        self.set_parameter_ui.setupUi(self.set_parameter_diag)
+        self.set_parameter_diag.exec()
 
+        success = self.set_parameter_diag.success
+        saved_name = self.set_parameter_diag.name
+
+        if success:
+            import globalvar
+            user_id = globalvar.global_your_user_id
+            keyword = globalvar.global_search_lineEdit.text()
+            min_price = globalvar.global_min_price
+            max_price = globalvar.global_max_price
+            min_review = globalvar.global_min_rating
+            max_review = globalvar.global_max_rating
+            min_rating = globalvar.global_user_rating
+            hl_only = globalvar.global_historical_low
+
+            globalvar.global_sql_op.saveParameter(user_id, saved_name, keyword, min_price, max_price, min_review, max_review, min_rating, hl_only)
+
+            from PyQt5.QtWidgets import QMessageBox
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)
+            msg.setText("Parameter saved successfully!")
+            msg.setWindowTitle("Success")
+            msg.exec()
+        
     def savedParameter(self):
         from parameters import Ui_Dialog as parameters_UI
         self.parameters_diag = QtWidgets.QDialog()
@@ -153,6 +180,9 @@ class Ui_Dialog(object):
         self.wishlist_ui.setupUi(self.wishlist_diag)
         self.wishlist_diag.exec()
 
+    def checkWishlistDiscounts(self):
+        pass
+
     def hideProgressBar(self):
         self.frame_2.hide()
         self.frame_3.hide()
@@ -161,17 +191,5 @@ class Ui_Dialog(object):
         self.frame_2.show()
         self.frame_3.show()
 
-    def checkWishlistDiscounts(self):
-        pass
-
     def updateDB(self):
         self.showProgressBar()
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    Dialog = QtWidgets.QDialog()
-    ui = Ui_Dialog()
-    ui.setupUi(Dialog)
-    Dialog.show()
-    sys.exit(app.exec_())
