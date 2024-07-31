@@ -1,4 +1,4 @@
-# CS-338-Group-Project Milestone 2
+# CS-338-Group-Project
 
 ## Overview
 We use MySQL 8.0 as our database management system. The SQL queries directory contains four folders, each designed for different database operations.
