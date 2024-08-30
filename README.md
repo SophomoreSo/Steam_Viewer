@@ -106,12 +106,6 @@ Again, run both queries for comparison.
   pip install PyQtWebEngine
 ```
 Please follow the instructions on how to PIP install here: https://youtu.be/fJKdIf11GcI
-
-<div align="left">
-   <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/1.png" height=100px>
-</div>
-
-
 - Go to the main directory, and open up the command prompt to type `python main.py`.
 
 <div align="left">
