@@ -8,7 +8,7 @@ This folder guides you through importing the dataset into your database.
 
 
 <div align="left">
-  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/1.png" height=150px>
+  <img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/img/Database_Setup/1.png" height=150px>
 </div>
 
 
@@ -16,7 +16,7 @@ This folder guides you through importing the dataset into your database.
 
 
 <div align="left">
-  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/2.png" height=150px>
+  <img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/img/Database_Setup/2.png" height=150px>
 </div>
 
 
@@ -24,8 +24,8 @@ This folder guides you through importing the dataset into your database.
 
 
 <div align="left">
-  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/3.png" height=150px>
-  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/4.png" height=150px>
+  <img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/img/Database_Setup/3.png" height=150px>
+  <img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/img/Database_Setup/4.png" height=150px>
 </div>
 
 - Replace `price.csv` and `game.csv` paths with the directories where your CSV files are located.
@@ -35,7 +35,7 @@ This folder guides you through importing the dataset into your database.
 
 
 <div align="left">
-   <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/5.png" height=150px>
+   <img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/img/Database_Setup/5.png" height=150px>
 </div>
 
 
@@ -43,7 +43,7 @@ This folder guides you through importing the dataset into your database.
 
 
 <div align="left">
-   <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/6.png" height=150px>
+   <img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/img/Database_Setup/6.png" height=150px>
 </div>
 
 
@@ -51,7 +51,7 @@ This folder guides you through importing the dataset into your database.
 
 
 <div align="left">
-   <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/Database_Setup/7.png" height=150px>
+   <img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/img/Database_Setup/7.png" height=150px>
 </div>
 
 
@@ -79,7 +79,7 @@ The table is divided into two parts for performance optimization:
   1. Game_Discussion(discussion_id, game_id)
   2. Discussion(discussion_id, user_id, voted_up, review_text, timestamp_created)
 <div align="left">
-   <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/SQL queries/5_Steam_Review/Performance Tuning Proof.png">
+   <img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/SQL queries/5_Steam_Review/Performance Tuning Proof.png">
 </div>
 There are two SQL files in this folder: one optimized for performance and the other not. Please run both queries to compare their runtime.
 
@@ -91,7 +91,7 @@ The table is also divided into two parts for optimization:
   1. Streamer_App(app_id, streamer_id)
   2. Streamer(streamer_id, streamer_name, followers)
 <div align="left">
-   <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/SQL queries/6_Find_Streamer/Performance Tuning Proof.png">
+   <img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/SQL queries/6_Find_Streamer/Performance Tuning Proof.png">
 </div>
 Again, run both queries for comparison.
 
@@ -109,16 +109,16 @@ Please follow the instructions on how to PIP install here: https://youtu.be/fJKd
 - Go to the main directory, and open up the command prompt to type `python main.py`.
 
 <div align="left">
-   <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/2.png" height=150px>
-   <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/3.png" height=150px>
+   <img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/img/App_Test/2.png" height=150px>
+   <img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/img/App_Test/3.png" height=150px>
 </div>
 
 
 - When successfully opened up the application, you can enter the name of the game on the main search tab. You can also set the price requirements and rating requirements by clicking the respective settings button.
 
 <div align="left">
-   <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/4.png" height=150px>
-  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/5.png" height=150px>
+   <img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/img/App_Test/4.png" height=150px>
+  <img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/img/App_Test/5.png" height=150px>
 </div>
 - After setting up the search parameters, you will be prompted with the login popup. Simply type in the database password that you have set up.
 
@@ -127,7 +127,7 @@ The application currently has three implemented features:
 
 
 <div align="left">
-  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/6.png" height=200px>
+  <img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/img/App_Test/6.png" height=200px>
 </div>
 
 
@@ -139,8 +139,8 @@ The application currently has three implemented features:
 
 
 <div align="left">
-  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/8.png" height=200px>
-  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/9.png" height=200px>
+  <img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/img/App_Test/8.png" height=200px>
+  <img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/img/App_Test/9.png" height=200px>
 </div>
 
 
@@ -149,19 +149,19 @@ The application currently has three implemented features:
    - Click the dropdown menu and select how you want to sort the results. Currently, there are three attributes (price, ratings, name) to sort by. You can also click the triangle button to list the results in ascending or descending order.
 
 <div align="left">
-  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/10.png" height=200px>
+  <img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/img/App_Test/10.png" height=200px>
 </div>
 
 
 <div align="left">
-<img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/11.png" height=400px>
+<img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/img/App_Test/11.png" height=400px>
 </div>
 
 3. **Price History Viewer**
    - Click any item listed in the search tab. At the bottom, a price chart of the game will be displayed. Hover over any point in the graph to see the time info and associated price.
 
 <div align="left">
-  <img src="https://github.com/SophomoreSo/CS-338-Group-Project/blob/main/img/App_Test/12.png" height=400px>
+  <img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/img/App_Test/12.png" height=400px>
 </div>
 
 4. **Steam Reviews**
