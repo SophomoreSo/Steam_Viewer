@@ -25,7 +25,6 @@ This folder guides you through importing the dataset into your database.
 
 <div align="left">
   <img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/img/Database_Setup/3.png" height=150px>
-  <img src="https://github.com/SophomoreSo/Steam_Viewer/blob/main/img/Database_Setup/4.png" height=150px>
 </div>
 
 - Replace `price.csv` and `game.csv` paths with the directories where your CSV files are located.
